@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  <input type="file" id="fileInput">  
+  <p id="result"></p>
+  <script>
+    document.getElementById('fileInput').addEventListener('change',
+    function selectedFileChanged() {
+      if (this.files.length === 0) {
+        console.log('No file selected.');
+        return
+    }
+
+    var total = 0;
+    const resultText = document.getElementById('result');
+
+    const reader = new FileReader();
+    reader.onload = function fileReadCompleted() {
+      // console.log(reader.result);
+      string = reader.result.replace( /\n/g, " " ).split(" ")
+      for (i in string) {
+        num = string[i];
+        if (num) {
+          total += Math.floor(num / 3) - 2;
+        }
+      }
+      resultText.innerText = "Total fuel: " + total;
+    };
+    reader.readAsText(this.files[0]);
+  });
+  </script>
+
+</body>
+</html>
