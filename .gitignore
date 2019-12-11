@@ -4,3 +4,4 @@
 # Python stuff
 *.py[co]
 __pycache__/
+.flake8
