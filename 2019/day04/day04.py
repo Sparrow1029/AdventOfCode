@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import time
 from itertools import groupby
 
 RANGE = range(145852, 614943)
@@ -39,13 +40,20 @@ def get_digits(num):
     return rev_num
 
 
+# Part 1
 count1 = 0
-count2 = 0
+start1 = time.time()
 for i in RANGE:
     if valid_pwd(get_digits(i)):
         count1 += 1
+print(f"time: {time.time()-start1}")
+print(f"Part 1: {count1}")
+
+# Part 2
+count2 = 0
+start2 = time.time()
+for i in RANGE:
     if valid_pwd2(get_digits(i)):
         count2 += 1
-
-print(f"Part 1: {count1}")
+print(f"time: {time.time()-start2}")
 print(f"Part 2: {count2}")
