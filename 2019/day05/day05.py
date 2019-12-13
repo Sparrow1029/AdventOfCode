@@ -13,8 +13,8 @@ class IntcodeComputer():
     :type program: list
     """
     def __init__(self, program):
-        self.op = program
-        self.p = self.op.copy()
+        self.og = program
+        self.p = self.og.copy()
         self.cursor = 0
         self.ops_map = {
             1: lambda i, m, x: self.op1(i, i+1, i+2, m),
@@ -48,7 +48,6 @@ class IntcodeComputer():
         """Output (print) the value stored at p1"""
         print(self.p[self.p[p1]], end=" ")
         self.cursor += 2
-        # return self.p[self.p[p1]]
 
     def op5(self, p1, p2, pmodes):
         """If the value at p1 is non-zero, set the cursor to p2.
@@ -80,7 +79,6 @@ class IntcodeComputer():
     def op8(self, p1, p2, p3, pmodes):
         """p3 = (p1 == p2) ? 1 : 0"""
         p1mod, p2mod = pmodes
-        # print(f"{self.p_val(p1, p1mod)} == {self.p_val(p2, p2mod)}")
         eq = self.p_val(p1, p1mod) == self.p_val(p2, p2mod)
         self.p[self.p[p3]] = 1 if eq else 0
         self.cursor += 4
@@ -109,7 +107,7 @@ class IntcodeComputer():
             return self.p[pos]
 
     def run(self, argx=None, show_program=False):
-        """Run the int_code computer.
+        """Run the int_code computer. Opcode '99' exits the program.
         :param show_program: Output the final program state after a successful run
         :type show_program: bool, defaults to False
         :param argx: Single input parameter given to the program (for opcode 3)
