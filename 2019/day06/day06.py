@@ -8,8 +8,7 @@ with open('input.txt', 'r') as f:
     for i in data:
         planet, orbited_by = i.split(')')
         orbit_data[planet].append(orbited_by)
-        planets.add(planet)
-        planets.add(orbited_by)
+        planets.update([planet, orbited_by])
 
 
 def find_path(graph, start, end, path=[]):
