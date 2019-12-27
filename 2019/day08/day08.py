@@ -15,7 +15,7 @@ def build_layers(image_data, w, h):
         yield image_data[i:i+area]
 
 
-ALL_LAYERS = [list(map(int, list(layer)))for layer in build_layers(image_data, WIDTH, HEIGHT)]
+ALL_LAYERS = [list(map(int, list(layer))) for layer in build_layers(image_data, WIDTH, HEIGHT)]
 
 
 def decode_image(image_data):
