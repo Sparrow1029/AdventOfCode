@@ -6,11 +6,9 @@ solution.
 
 
 class IntcodeComputer():
-    """Main IntcodeComputer class
-    :param program: List of ints that represent opcodes and inputs
-    :type program: list
-    """
-    def __init__(self, program):
+    """Main IntcodeComputer class """
+
+    def __init__(self, program=[]):
         self.og = program
         self.p = self.og.copy()
         self.cursor = 0
@@ -105,12 +103,7 @@ class IntcodeComputer():
             return self.p[pos]
 
     def run(self, argx=None, show_program=False):
-        """Run the int_code computer. Opcode '99' exits the program.
-        :param show_program: Output the final program state after a successful run
-        :type show_program: bool, defaults to False
-        :param argx: Single input parameter given to the program (for opcode 3)
-        :type argx: int, optional (for programs without opcode 3)
-        """
+        """Run the int_code computer. Opcode '99' exits the program."""
         while self.p[self.cursor] != 99:
             op, modes = self.parse_instr(self.p[self.cursor])
             self.ops_map[op](self.cursor+1, modes, argx)
@@ -118,8 +111,49 @@ class IntcodeComputer():
             print(self.p)
         self.cursor = 0
 
+    def reset(self):
+        """Reset program """
+        self.cursor = 0
+        self.p = self.og.copy()
 
-if __name__ == '__main__':
-    program = list(map(int, open('input.txt').read().strip('\n').split(',')))
-    int_code = IntcodeComputer(program)
-    int_code.run(argx=5)
+
+class Amplifier(IntcodeComputer):
+
+    def __init__(self, idx, phase_setting, program: list):
+        IntcodeComputer.__init__(self, program=program)
+        self.idx = idx
+        self.output = 0
+        self.queue = []
+        self.op3(phase_setting, self.cursor+1)
+        self.next_amp = None
+        self.halted = False
+
+    def op4(self, p1):
+        """Return the value stored at p1"""
+        self.output = self.p[self.p[p1]]
+        self.cursor += 2
+
+    def connect(self, amp):
+        self.next_amp = amp
+
+    def recv(self, signal):
+        self.queue.append(signal)
+
+    def send(self):
+        if not self.next_amp.halted:
+            self.next_amp.recv(self.output)
+            self.next_amp.run()
+        else:
+            print(self.output)
+
+    def run(self):
+        if len(self.queue):
+            signal = self.queue.pop()
+            while self.p[self.cursor] != 99:
+                op, modes = self.parse_instr(self.p[self.cursor])
+                self.ops_map[op](self.cursor+1, modes, signal)
+                if op == 4:
+                    self.send()
+
+        self.halted = True
+
