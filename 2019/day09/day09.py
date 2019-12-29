@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-
 from intcode import IntcodeComputer
-# from alex_intcode import IntcodeComputer
 
 with open('input.txt', 'r') as f:
     data = f.read().split(',')
