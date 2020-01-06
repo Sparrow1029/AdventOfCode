@@ -39,10 +39,12 @@ def create_graph(inp_file):
 
 def get_visible_rows(graph, ast):
     test_graph = graph.copy()
-    rows = set([a for a in test_graph if a.y in [ast.y+1, ast.y-1]])
-    cols = set([a for a in test_graph if a.x in [ast.x+1, ast.x-1]])
+    rows = [a for a in test_graph if a.y in [ast.y+1, ast.y-1]]
+    print(rows)
+    cols = [a for a in test_graph if a.x in [ast.x+1, ast.x+1]]
+    print(cols)
 
-    return rows.union(cols)
+    return rows.extend(cols)
 
 
 def get_quadrants(graph, a):
@@ -74,4 +76,4 @@ def get_compass(graph, ast, all_asteroids):
 if __name__ == '__main__':
     assert len(sys.argv) == 2
     graph = create_graph(sys.argv[1])
-    imm = get_visible_rows(graph, graph[0])
+    get_visible_rows(graph, graph[0])
