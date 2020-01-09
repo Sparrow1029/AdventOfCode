@@ -5,6 +5,13 @@ solution.
 """
 
 
+def parse_file(input_file):
+    path = ('./' + input_file)
+    with open(path, 'r') as f:
+        data = f.read().strip().split(',')
+        return list(map(int, data))
+
+
 class IntcodeComputer():
     """Main IntcodeComputer class """
 
@@ -123,12 +130,13 @@ class IntcodeComputer():
             if mode == 2:
                 return self.p[pos] + self.rel_base
 
-    def run(self, argx=None, show_program=False):
+    def run(self, argx=None, output=True):
         """Run the int_code computer. Opcode '99' exits the program."""
         while self.p[self.cursor] != 99:
             op, modes = self.parse_instr(self.p[self.cursor])
             self.ops_map[op](self.cursor+1, modes, argx)
-        print(self.out)
+        if output:
+            print(self.out)
 
     def reset(self):
         self.__init__(self.orig)
